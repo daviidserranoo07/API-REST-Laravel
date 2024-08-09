@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\PutRequest;
 use App\Models\Product;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -30,6 +31,9 @@ class ProductController extends Controller
 
     }
 
+    /**
+     * Display a listing of the resource for id.
+     */
     public function showId(Product $product){
 
         $product = Product::where('id',$product->id)->get();
@@ -43,9 +47,8 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(PostRequest $request)
-    {
-        $data = $request->validated();
-        $product = Product::create($data);
+    {   
+        $product = Product::create($request->validated());
         
         return response()->json([
             'status' => true,
@@ -69,8 +72,7 @@ class ProductController extends Controller
      */
     public function update(PutRequest $request, Product $product)
     {
-        $data = $request->validated();
-        $product->update($data);
+        $product->update($request->validated());
 
         return response()->json([
             'status' => true,
