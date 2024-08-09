@@ -8,5 +8,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::resource('product',ProductController::class)->except('create','edit');
+Route::get('product/title/{product:title}',[ProductController::class,'showTitle']);
+Route::get('product/id/{product:id}',[ProductController::class,'showId']);
+Route::apiResource('product',ProductController::class)->except('create','edit');
 

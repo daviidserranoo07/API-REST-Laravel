@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\PutRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,29 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return response()->json(Product::paginate(5));
+        return response()->json(Product::get(),200);
+    }
+
+    /**
+     * Display a listing of the resource for name.
+     */
+    public function showTitle(Product $product)
+    {
+        $product = Product::where('title',$product->title)->get();
+        return response()->json([
+            'status'=>true,
+            'product'=>$product,
+        ],200);
+
+    }
+
+    public function showId(Product $product){
+
+        $product = Product::where('id',$product->id)->get();
+        return response()->json([
+            'status'=>true,
+            'product'=>$product,
+        ],200);
     }
 
     /**
@@ -22,7 +45,6 @@ class ProductController extends Controller
     public function store(PostRequest $request)
     {
         $data = $request->validated();
-
         $product = Product::create($data);
         
         return response()->json([
@@ -45,9 +67,15 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(PutRequest $request, Product $product)
     {
-        //
+        $data = $request->validated();
+        $product->update($data);
+
+        return response()->json([
+            'status' => true,
+            'product' => $product,
+        ],200);
     }
 
     /**
@@ -55,6 +83,6 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
     }
 }
