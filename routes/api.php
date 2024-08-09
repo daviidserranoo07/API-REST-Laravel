@@ -9,6 +9,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('product/title/{product:title}',[ProductController::class,'showTitle']);
-Route::get('product/id/{product:id}',[ProductController::class,'showId']);
 Route::apiResource('product',ProductController::class)->except('create','edit');
 

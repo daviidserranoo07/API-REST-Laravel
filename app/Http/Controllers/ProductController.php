@@ -32,18 +32,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Display a listing of the resource for id.
-     */
-    public function showId(Product $product){
-
-        $product = Product::where('id',$product->id)->get();
-        return response()->json([
-            'status'=>true,
-            'product'=>$product,
-        ],200);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(PostRequest $request)
