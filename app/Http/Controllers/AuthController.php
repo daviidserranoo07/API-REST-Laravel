@@ -12,11 +12,15 @@ use \stdClass;
 
 class AuthController extends Controller
 {
+    /**
+     * Register a new user
+     */
     public function register(PostRequest $request){
 
-        $data = $request->validated();
 
         try{
+            $data = $request->validated();
+    
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -40,6 +44,9 @@ class AuthController extends Controller
         
     }
 
+    /**
+     * Login user
+     */
     public function login(Request $request){
 
         if(!Auth::attempt($request->only('email','password'))){
@@ -62,6 +69,9 @@ class AuthController extends Controller
         ],200);
     }
 
+    /**
+     * Logout user
+     */
     public function logout(){
 
         auth()->user()->tokens()->delete();
