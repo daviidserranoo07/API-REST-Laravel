@@ -23,7 +23,7 @@ class ProductController extends Controller
      */
     public function showTitle(Product $product)
     {
-        $product = Product::where('title',$product->title)->get();
+        $product = Product::where('title',$product->title)->firstOrFail();
         return response()->json([
             'status'=>true,
             'product'=>$product,

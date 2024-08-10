@@ -16,19 +16,59 @@ class AuthController extends Controller
 
         $data = $request->validated();
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        try{
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+            ]);
+    
+            $token = $user->createToken('auth_token')->plainTextToken;
+    
+            return response()->json([
+                'status' => true,
+                'data' => $user,
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+            ],201);
+        }catch(\Exception $e){
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to register',
+            ],500);
+        }
+        
+    }
+
+    public function login(Request $request){
+
+        if(!Auth::attempt($request->only('email','password'))){
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized',
+            ],401);
+        }
+
+        $user = User::where('email',$request->email)->firstOrFail();
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'status' => true,
-            'data' => $user,
+            'message' => 'Hi, '.$user->name,
+            'user' => $user,
             'access_token' => $token,
             'token_type' => 'Bearer',
-        ],201);
+        ],200);
+    }
+
+    public function logout(){
+
+        auth()->user()->tokens()->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'You have been successfully logged out and the token has been deleted',
+        ],200);
     }
 }
