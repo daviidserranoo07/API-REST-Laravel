@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\User\PostRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use \stdClass;
